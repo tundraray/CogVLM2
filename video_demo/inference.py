@@ -24,7 +24,7 @@ def load_video(video_data, strategy='chat'):
 
     frame_id_list = None
     total_frames = len(decord_vr)
-    num_frames = round(total_frames) 
+    num_frames = 24 
     if strategy == 'base':
         clip_end_sec = 60
         clip_start_sec = 0
