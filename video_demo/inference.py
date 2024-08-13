@@ -24,7 +24,7 @@ def load_video(video_data, strategy='chat'):
 
     frame_id_list = None
     total_frames = len(decord_vr)
-    num_frames = 24 
+    num_frames = 60 
     if strategy == 'base':
         clip_end_sec = 60
         clip_start_sec = 0
@@ -68,7 +68,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
 
 def predict(prompt, video_data, temperature):
-    strategy = 'base'
+    strategy = 'chat'
 
     video = load_video(video_data, strategy=strategy)
 
