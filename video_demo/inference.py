@@ -19,11 +19,12 @@ args = parser.parse_args([])
 def load_video(video_data, strategy='chat'):
     bridge.set_bridge('torch')
     mp4_stream = video_data
-    num_frames = 24
+    
     decord_vr = VideoReader(io.BytesIO(mp4_stream), ctx=cpu(0))
 
     frame_id_list = None
     total_frames = len(decord_vr)
+    num_frames = round(total_frames / 2) 
     if strategy == 'base':
         clip_end_sec = 60
         clip_start_sec = 0
@@ -80,6 +81,7 @@ def predict(prompt, video_data, temperature):
         history=history,
         template_version=strategy
     )
+    
     inputs = {
         'input_ids': inputs['input_ids'].unsqueeze(0).to('cuda'),
         'token_type_ids': inputs['token_type_ids'].unsqueeze(0).to('cuda'),
@@ -94,6 +96,7 @@ def predict(prompt, video_data, temperature):
         "top_p": 0.1,
         "temperature": temperature,
     }
+    print("gen_kwargs:", gen_kwargs)
     with torch.no_grad():
         outputs = model.generate(**inputs, **gen_kwargs)
         outputs = outputs[:, inputs['input_ids'].shape[1]:]
